@@ -1,0 +1,356 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+  <link rel="stylesheet" href="{% static 'css/control.css'%}" />
+  <title>EDI Website</title>
+  {% comment %}
+  <script src="{% static 'js/map.js' %}"></script>
+  {% endcomment %}
+
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" rel="stylesheet" />
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js"></script>
+  <style>
+    #map {
+      position: absolute;
+      top: 1400px;
+      bottom: 0;
+      width: 100%;
+      height: 800px
+    }
+
+    #map {
+      position: absolute;
+      top: 1400px;
+      bottom: 0
+    }
+
+  </style>
+  <style type="text/css">
+    .label-container
+    {
+        display:  table;
+        width:auto;
+        background-color:#eee;
+        border:1px solid  #666666;
+        border-spacing:5px;/*cellspacing:poor IE support for  this*/
+       /* border-collapse:separate;*/
+    }
+
+    .label-container div
+    {
+       display:table-row;
+       width:auto;
+    }
+
+    .divCell
+    {
+        float:left;/*fix for  buggy browsers*/
+        display:table-column;
+        width:200px;
+        background-color:#ccc;
+    }
+</style>
+</head>
+
+<body class="bg-dark">
+  <br />
+  <div class="container-fluid">
+    <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+      <div class="container-fluid">
+        <a class="navbar-brand center" href="#">IOT CP Robot</a>
+      </div>
+    </nav>
+  </div>
+
+  <br />
+  <br />
+  <div class="container">
+    <div class="card text-center">
+      <div class="card-header">About</div>
+      {% comment %}
+      <div class="card-body">
+        <br />
+        <br />
+        <br />
+        <h5 class="card-title">Controlling Robot Globally</h5>
+        <br />
+        <p class="card-text">
+          The Website is made for giving commands to the robot and to get the
+          data from the Robot
+        </p>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+      </div>
+      {% endcomment %}
+      <div class="row g-0 bg-light position-relative">
+        <div class="col-md-6 mb-md-0 p-md-4">
+          <img src="{% static 'img/vitimg.png' %}" style="width: 18rem" alt="VIT PUNE" />
+        </div>
+        <div class="col-md-6 p-4 ps-md-0">
+          <br /><br />
+          <br />
+          <h5 class="mt-0">Student Of Vit Pune</h5>
+          <p>
+            This website is created by VIT Pune student as a part of there
+            project
+          </p>
+          <p>
+            <!-- On the Topic Robot Model for analysing condition of Mines -->
+            On the Topic Robot Model for monitering Mine condition
+          </p>
+          <a href="#" class="btn btn-dark stretched-link">VIT Pune</a>
+        </div>
+      </div>
+      <div class="card-footer text-muted">VIT Pune</div>
+    </div>
+  </div>
+  <br />
+  <br />
+  <br />
+  <h1 class="position-absolute start-50 translate-middle">Camera</h1>
+  <div>
+    <!-- <div id="map"></div> -->
+    <script>
+      // var longitude = 0;
+      // var latitude = 0;
+      // var api_latitude =
+      //   "https://api.thingspeak.com/channels/1623091/fields/1.json?api_key=NZKLYM5SE9WMYBWQ&results=2";
+      // var api_longitude =
+      //   "https://api.thingspeak.com/channels/1623091/fields/2.json?api_key=NZKLYM5SE9WMYBWQ&results=2";
+
+      // async function fetch_latitude_Text() {
+      //   let response = await fetch(api_latitude);
+      //   let data = await response.json();
+      //   console.log(data.feeds[1].field1.slice(0, 5));
+      //   latitude = parseFloat(data.feeds[1].field1.slice(0, 5));
+      //   console.log(latitude);
+      // }
+      
+      // console.log(latitude);
+
+      // async function fetch_longitude_Text() {
+      //   let response = await fetch(api_longitude);
+      //   let data = await response.json();
+      //   console.log(data.feeds[0].field2.slice(0, 5));
+      //   longitude = parseFloat(data.feeds[0].field2.slice(0, 5));
+      // }
+      
+
+      // async function plot_map(){
+      //   await fetch_latitude_Text();
+      //   await fetch_longitude_Text();
+      //   console.log("Latitude: ")
+      //   console.log(latitude);
+      //   console.log(longitude);
+      //   let lat = latitude;
+      //   let lon = longitude;
+        
+
+      //   mapboxgl.accessToken =
+      //   "pk.eyJ1Ijoicm9oaXQ3MjAxIiwiYSI6ImNreWg3dHhvcDA2Zm8ydnFvZ2luMmMyMm8ifQ.q_6EfAS_KvBwHZxN06EkvA";
+      // const map = new mapboxgl.Map({
+      //   container: "map",
+      //   style: "mapbox://styles/mapbox/streets-v11",
+      //   center: [lat, lon],
+      //   zoom: 8,
+      // });
+
+    //   Create a default Marker and add it to the map.
+    //   const marker1 = new mapboxgl.Marker()
+    //     .setLngLat([lat, lon])
+    //     .addTo(map);
+
+    //   // Create a default Marker, colored black, rotated 45 degrees.
+    //   const marker2 = new mapboxgl.Marker({ color: "black", rotation: 0 })
+    //     .setLngLat([lat, lon])
+    //     .addTo(map);
+    //   }
+    //   plot_map();
+    // </script>
+  </div>
+  <br />
+  <br />
+  <hr class="bg-light" />
+  <br />
+  <div class="d-flex justify-content-center">
+  <p class="text-light bg-dark" id="output"></p>
+</div>
+  <br />
+  <!-- <div class="p-1"><iframe width="500" height="300" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/1744955/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+    <iframe width="500" height="300" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/1744955/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+    <iframe width="500" height="300" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/1744955/charts/3?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+
+  </div> -->
+  <!-- <div class="d-flex align-items-center"id="camera"> -->
+    <!-- <iframe src="http://192.168.43.139:81/stream" height="600" width="100%" frameborder="0"></iframe> -->
+    <!-- <iframe src="file:///E:/SY/Sem%202/EDI/Resources/cloned_TM_model/cloudcamera_ver2.html" height="600" width="100%" frameborder="0"></iframe> -->
+    
+    <div></div>
+<button type="button" onclick="init()">Start</button>
+<div class=""><canvas id="canvas"></canvas></div>
+<p class="text-light bg-dark" id="output"></p>
+<div class="text-light bg-dark"id="label-container" style="display:  table; width:auto; background-color:#eee; border:1px solid  #666666; border-spacing:5px;"></div>
+    <!-- <iframe src="http://192.168.43.1:4747/video" height="600" width="100%" frameborder="0"></iframe> --></div>
+<!-- http://192.168.43.139/ -->
+  <br />
+  <hr class="bg-light" />
+  <br />
+  <br />
+  <div class="control">
+    <div class="remote">
+      <span id="control_variable" class="text-white"></span>
+      <div class="remote-buttons">
+        <section>
+          <button id="left" class="power">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+              class="bi bi-arrow-bar-left" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M12.5 15a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5zM10 8a.5.5 0 0 1-.5.5H3.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L3.707 7.5H9.5a.5.5 0 0 1 .5.5z" />
+            </svg>
+          </button>
+        </section>
+        <section class="vol-section">
+          <button id="forward">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+              class="bi bi-arrow-bar-up" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M8 10a.5.5 0 0 0 .5-.5V3.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 3.707V9.5a.5.5 0 0 0 .5.5zm-7 2.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5z" />
+            </svg>
+          </button>
+          <button id="stop">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bullseye"
+              viewBox="0 0 16 16">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+              <path d="M8 13A5 5 0 1 1 8 3a5 5 0 0 1 0 10zm0 1A6 6 0 1 0 8 2a6 6 0 0 0 0 12z" />
+              <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" />
+              <path d="M9.5 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+            </svg>
+          </button>
+          <!--Vol Slider?-->
+        </section>
+        <section class="vol-section">
+          <button id="right" class="source">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+              class="bi bi-arrow-bar-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M6 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L12.293 7.5H6.5A.5.5 0 0 0 6 8zm-2.5 7a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5z" />
+            </svg>
+          </button>
+        </section>
+        <br />
+        <section class="vol-section">
+          <button id="backward">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+              class="bi bi-arrow-bar-down" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M1 3.5a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13a.5.5 0 0 1-.5-.5zM8 6a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 .708-.708L7.5 12.293V6.5A.5.5 0 0 1 8 6z" />
+            </svg>
+          </button>
+        </section>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
+<script type="text/javascript">
+    // More API functions here:
+    // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
+
+    // the link to your model provided by Teachable Machine export panel
+    const URL = "https://teachablemachine.withgoogle.com/models/jLeJTw1rQ/";
+    let model, webcam, ctx, labelContainer, maxPredictions;
+
+    async function init() {
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
+
+        // load the model and metadata
+        // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+        // Note: the pose library adds a tmPose object to your window (window.tmPose)
+        model = await tmPose.load(modelURL, metadataURL);
+        maxPredictions = model.getTotalClasses();
+
+        // Convenience function to setup a webcam
+        const size = 600;
+        const flip = true; // whether to flip the webcam
+        webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
+        await webcam.setup(); // request access to the webcam
+        await webcam.play();
+        window.requestAnimationFrame(loop);
+
+        // append/get elements to the DOM
+        const canvas = document.getElementById("canvas");
+        canvas.width = size; canvas.height = size;
+        ctx = canvas.getContext("2d");
+        labelContainer = document.getElementById("label-container");
+        for (let i = 0; i < maxPredictions; i++) { // and class labels
+            labelContainer.appendChild(document.createElement("div"));
+        }
+    }
+
+    async function loop(timestamp) {
+        webcam.update(); // update the webcam frame
+        await predict();
+        window.requestAnimationFrame(loop);
+    }
+
+    async function predict() {
+        // Prediction #1: run input through posenet
+        // estimatePose can take in an image, video or canvas html element
+        const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
+        // Prediction 2: run input through teachable machine classification model
+        const prediction = await model.predict(posenetOutput);
+
+        for (let i = 0; i < maxPredictions; i++) {
+            const classPrediction =
+                prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+            labelContainer.childNodes[i].innerHTML = classPrediction;
+            if( (prediction[3].probability.toFixed(2)) >= 0.90 || (prediction[4].probability.toFixed(2)) >= 0.90 || (prediction[5].probability.toFixed(2))>= 0.90 || (prediction[6].probability.toFixed(2))>= 0.90 || (prediction[7].probability.toFixed(2))>= 0.90)
+            {
+             document.getElementById("output").innerHTML = "Suspicious activity";
+              // var audio = new Audio("https://media.geeksforgeeks.org/wp-content/uploads/20190531135120/beep.mp3");
+              // audio.play();
+            }else{
+                         document.getElementById("output").innerHTML = "Normal activity";
+
+            }
+           // document.getElementById("output").innerHTML = prediction[2].className + prediction[2].probability.toFixed(2);
+
+        }
+
+        // finally draw the poses
+        drawPose(pose);
+    }
+
+    function drawPose(pose) {
+        if (webcam.canvas) {
+            ctx.drawImage(webcam.canvas, 0, 0);
+            // draw the keypoints and skeleton
+            if (pose) {
+                const minPartConfidence = 0.5;
+                tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
+                tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
+            }
+        }
+    }
+</script>
+
+  <script src="{% static 'js/control.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
