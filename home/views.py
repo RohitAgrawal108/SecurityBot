@@ -21,3 +21,32 @@ URL_stop = URL+"s"
 
 def index(request):
     return render(request, 'home/index.html')
+
+def send_forward_command(repuest):
+    print("run forward")
+    r = requests.get(url=URL_forward)
+    print("Forward")
+    return JsonResponse({'data': 'F'}, safe=False)
+
+def send_backward_command(repuest):
+    print("run Backward")
+    r = requests.get(url=URL_backward)
+    print("Backward")
+    return JsonResponse({'data': 'B'}, safe=False)
+
+def send_right_command(repuest):
+    print("run right")
+    r = requests.get(url=URL_right)
+    print("right")
+    return JsonResponse({'data': 'R'}, safe=False)
+
+def send_left_command(repuest):
+    print("runn left")
+    r = requests.get(url=URL_left)
+    print("left")
+    return JsonResponse({'data': 'L'}, safe=False)
+
+def send_stop_command(repuest):
+    r = requests.get(url=URL_stop)
+    print("stop")
+    return JsonResponse({'data': 'S'}, safe=False)
